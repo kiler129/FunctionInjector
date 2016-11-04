@@ -32,7 +32,7 @@ trait FunctionsInjectorTrait
         }
 
         $fqcn = trim($fqcn, '\\');
-        $ns = substr($fqcn, 0, (int)strpos($fqcn, '\\'));
+        $ns = substr($fqcn, 0, (int)strrpos($fqcn, '\\'));
 
         $this->injectIntoNamespace($ns, $function, $cb);
     }
