@@ -45,8 +45,10 @@ class FunctionInjector
 
     private function getInjectionCode($scopeId, InjectableInterface $injection)
     {
+        $ns = trim($injection->getNamespace(), '\\');
+
         $injectionCode = <<<CODE
-namespace {$injection->getNamespace()} {
+namespace $ns {
     function {$injection->getFunctionName()}() {
         return call_user_func_array(
                     \$GLOBALS['$scopeId']->getCallback(), 

@@ -238,4 +238,108 @@ class FunctionInjectorTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(201, $i2, 'Callback #2 execution went wrong');
         $this->assertSame(301, $i3, 'Callback #3 execution went wrong');
     }
+
+    public function testNamespaceWithLeadingSlashWorksCorrectly()
+    {
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('testFunction');
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn(
+                '\noFlash\FunctionsManipulator\Tests\Simulation_testWithLeadingSlash'
+            );
+
+        //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
+
+    public function testNamespaceWithoutLeadingSlashWorksCorrectly()
+    {
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('testFunction');
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn(
+                'noFlash\FunctionsManipulator\Tests\Simulation_testWithoutLeadingSlash'
+            );
+
+        //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
+
+    public function testNamespaceWithTrailingSlashWorksCorrectly()
+    {
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('testFunction');
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn(
+                'noFlash\FunctionsManipulator\Tests\Simulation_testWithTrailingSlash\\'
+            );
+
+        //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
+
+    public function testNamespaceWithoutTrailingSlashWorksCorrectly()
+    {
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('testFunction');
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn(
+                'noFlash\FunctionsManipulator\Tests\Simulation_testWithoutTrailingSlash'
+            );
+
+        //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
+
+    public function testRootNamespaceWithLeadingSlashWorksCorrectly()
+    {
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('testFunctionRootWithLSL');
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn('\\');
+
+        //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
+
+    public function testRootNamespaceWithoutLeadingSlashWorksCorrectly()
+    {
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('testFunctionRootWOLS');
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn('');
+
+        //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
 }
