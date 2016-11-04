@@ -1,0 +1,29 @@
+{
+  "name": "noflash/function_injector",
+  "description": "Add dynamic functions to any namespace (and replace global ones)",
+  "minimum-stability": "beta",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Grzegorz Zdanowski",
+      "email": "grzegorz@noflash.pl",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "noFlash\\FunctionsManipulator\\": "src"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
+}
