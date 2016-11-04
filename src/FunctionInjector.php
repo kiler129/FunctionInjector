@@ -51,7 +51,8 @@ class FunctionInjector
         $injectionCode = <<<CODE
 namespace $ns {
     function {$injection->getFunctionName()}(...\$args) {
-        return \$GLOBALS['$scopeId']->getCallback()(...\$args);
+        \$cb = \$GLOBALS['$scopeId']->getCallback();
+        return \$cb(...\$args);
     }
 }
 CODE;
@@ -78,6 +79,7 @@ CODE;
         $GLOBALS[$scopeId] = $injection;
         $injectionCode = $this->getInjectionCode($scopeId, $injection);
 
+        //var_dump($injectionCode);
         //The only valid use-case for eval() in my career...
         eval($injectionCode);
 
