@@ -12,6 +12,7 @@ namespace noFlash\FunctionsManipulator;
 
 use noFlash\FunctionsManipulator\Exception\IncompleteInjectableException;
 use noFlash\FunctionsManipulator\Exception\InjectionMismatchException;
+use noFlash\FunctionsManipulator\Exception\RedeclareException;
 use noFlash\FunctionsManipulator\Exception\ScopeGenerationLimitException;
 use noFlash\FunctionsManipulator\Exception\ScopeNotFoundException;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
@@ -63,10 +64,17 @@ CODE;
 
     public function injectFunction(InjectableInterface $injection)
     {
-        if ($injection->getFunctionName() === null) {
+        $functionName = $injection->getFunctionName();
+        if ($functionName === null) {
             throw new IncompleteInjectableException(
                 'Passed injectable lacks function name'
             );
+        }
+
+        $ns = trim($injection->getNamespace(), '\\');
+        $accessor = '\\' . ((empty($ns)) ? $functionName : ($ns . '\\' . $functionName));
+        if (function_exists($accessor)) {
+            throw new RedeclareException($ns, $functionName);
         }
 
         $scopeId = $this->getUniqueScopeKey();

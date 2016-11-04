@@ -11,6 +11,7 @@
 namespace noFlash\FunctionsManipulator\Tests;
 
 use noFlash\FunctionsManipulator\Exception\IncompleteInjectableException;
+use noFlash\FunctionsManipulator\Exception\RedeclareException;
 use noFlash\FunctionsManipulator\FunctionInjector;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
 
@@ -340,6 +341,33 @@ class FunctionInjectorTest extends \PHPUnit_Framework_TestCase
             ->willReturn('');
 
         //This will fail with parser exception if generated code is wrong
+        $this->subjectUnderTest->injectFunction($injection);
+    }
+
+
+    public function testAlreadyExistingFunctionCannotBeReplaced()
+    {
+        $closure = function () {};
+
+        $ns = '\\';
+        $fn = 'time';
+        $accessor = $ns . '\\' . $fn;
+
+        $injection = $this->getMockForAbstractClass(InjectableInterface::class);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn($fn);
+        $injection
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn($ns);
+        $injection
+            ->expects($this->any())
+            ->method('getCallback')
+            ->willReturn($closure);
+
+        $this->setExpectedException(RedeclareException::class);
         $this->subjectUnderTest->injectFunction($injection);
     }
 }
