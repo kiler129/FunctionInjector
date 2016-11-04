@@ -50,11 +50,8 @@ class FunctionInjector
 
         $injectionCode = <<<CODE
 namespace $ns {
-    function {$injection->getFunctionName()}() {
-        return call_user_func_array(
-                    \$GLOBALS['$scopeId']->getCallback(), 
-                    func_get_args()
-               ); 
+    function {$injection->getFunctionName()}(...\$args) {
+        return \$GLOBALS['$scopeId']->getCallback()(...\$args);
     }
 }
 CODE;
