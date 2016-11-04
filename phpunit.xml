@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of FunctionInjector project.
+  ~ You are using it at your own risk and you are fully responsible for everything that code will do.
+  ~
+  ~ Copyright (c) 2016 Grzegorz Zdanowski <grzegorz@noflash.pl>
+  ~
+  ~ For the full copyright and license information, please view the LICENSE file distributed with this source code.
+  -->
+
+<phpunit
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTestSize="true"
+        backupStaticAttributes="false"
+
+        cacheTokens="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        forceCoversAnnotation="false"
+        mapTestClassNameToCoveredClassName="false"
+
+        processIsolation="false"
+        stopOnError="false"
+        stopOnFailure="false"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+
+        verbose="true"
+        bootstrap="./vendor/autoload.php"
+>
+
+    <testsuites>
+        <testsuite name="AllTests">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+        <blacklist>
+            <directory>./vendor</directory>
+        </blacklist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="testdox-text" target="php://stdout"/>
+    </logging>
+</phpunit>
