@@ -26,11 +26,11 @@ class FunctionInjector
      * @var string Uses 2 parameters - NS and FunctionName
      * @internal
      */
-    const FAKE_SCOPE_PATTERN = '_noFlash_FunctionsManipulator_fakeScope_%s_%s';
+    const FAKE_SCOPE_PATTERN = '%s::%s';
 
     protected function getScopeKey($ns, $functionName)
     {
-        return sprintf(self::FAKE_SCOPE_PATTERN, strtr($ns, ['\\' => '']), $functionName);
+        return sprintf(self::FAKE_SCOPE_PATTERN, $ns, $functionName);
     }
 
     private function getInjectionCode($scopeId, InjectableInterface $injection)
@@ -40,8 +40,7 @@ class FunctionInjector
         $injectionCode = <<<CODE
 namespace $ns {
     function {$injection->getFunctionName()}(...\$args) {
-        \$cb = \$GLOBALS['$scopeId']->getCallback();
-        return \$cb(...\$args);
+        return \\noFlash\\FunctionsManipulator\\InjectionProxy::callInjection('$scopeId', \$args);
     }
 }
 CODE;
@@ -74,13 +73,13 @@ CODE;
         $ns = $injection->getNamespace();
         $scopeId = $this->getScopeKey($ns, $functionName);
 
-        if (isset($GLOBALS[$scopeId])) { //There is already an injection - just stop here
+        if (InjectionProxy::hasInjection($scopeId)) { //There is already an injection - just stop here
             throw new InjectionCollisionException($ns, $functionName);
         }
 
         $this->injectProxyCode($scopeId, $injection);
 
-        $GLOBALS[$scopeId] = $injection;
+        InjectionProxy::setInjection($scopeId, $injection);
 
         return $scopeId;
     }
@@ -117,25 +116,22 @@ CODE;
         $ns = $injection->getNamespace();
         $scopeId = $this->getScopeKey($ns, $functionName);
 
-        if (!isset($GLOBALS[$scopeId])) { //New injection - we need to inject code
+        if (!InjectionProxy::hasInjection($scopeId)) { //New injection - we need to inject code
             $this->injectProxyCode($scopeId, $injection);
         }
 
-        $GLOBALS[$scopeId] = $injection;
+        InjectionProxy::setInjection($scopeId, $injection);
 
         return $scopeId;
     }
 
     public function replaceFunctionInjection($scopeId, InjectableInterface $inj)
     {
-        if (!isset($GLOBALS[$scopeId]) ||
-            !($GLOBALS[$scopeId] instanceof InjectableInterface)
-        ) {
+        if (!InjectionProxy::hasInjection($scopeId)) {
             throw new ScopeNotFoundException($scopeId);
         }
 
-        /** @var InjectableInterface $oldInjection */
-        $oldInjection = $GLOBALS[$scopeId];
+        $oldInjection = InjectionProxy::getInjection($scopeId);
 
         $oldNS = $oldInjection->getNamespace();
         $newNS = $inj->getNamespace();
@@ -149,6 +145,6 @@ CODE;
             throw new InjectionMismatchException('function name', $oldFN, $newFN);
         }
 
-        $GLOBALS[$scopeId] = $inj;
+        InjectionProxy::setInjection($scopeId, $inj);
     }
 }
