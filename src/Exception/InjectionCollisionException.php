@@ -10,13 +10,18 @@
 
 namespace noFlash\FunctionsManipulator\Exception;
 
-class ScopeGenerationLimitException extends \RuntimeException
+class InjectionCollisionException extends \LogicException
 {
-    public function __construct($limit, \Exception $previous = null)
+    public function __construct($namespace, $functionName, \Exception $previous = null)
     {
+        if (empty($namespace)) {
+            $namespace = 'global namespace';
+        }
+        
         $message = sprintf(
-            'Scope ID generator exhausted allowed limit of %d attempts',
-            $limit
+            'Function %s cannot be injected into %s - there is another injection in this scope',
+            $functionName,
+            $namespace
         );
 
         parent::__construct($message, 0, $previous);

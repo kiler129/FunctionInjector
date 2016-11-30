@@ -43,4 +43,11 @@ class RedeclareExceptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertContains($functionName, $sut->getMessage());
     }
+
+    public function testGeneratedMessageContainsInformationAboutCollisionReason()
+    {
+        $sut = new RedeclareException(null, null);
+
+        $this->assertContains('function already defined', $sut->getMessage());
+    }
 }

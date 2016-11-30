@@ -11,6 +11,7 @@
 namespace noFlash\FunctionsManipulator;
 
 use noFlash\FunctionsManipulator\Exception\IncompleteInjectableException;
+use noFlash\FunctionsManipulator\Exception\InjectionCollisionException;
 use noFlash\FunctionsManipulator\Exception\InjectionMismatchException;
 use noFlash\FunctionsManipulator\Exception\RedeclareException;
 use noFlash\FunctionsManipulator\Exception\ScopeGenerationLimitException;
@@ -20,28 +21,16 @@ use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
 class FunctionInjector
 {
     /**
-     * @var string sprintf()-complaint pattern for scope generation
+     * sprintf()-complaint pattern for scope generation
+     *
+     * @var string Uses 2 parameters - NS and FunctionName
      * @internal
      */
-    const FAKE_SCOPE_PATTERN = '_noFlash_FunctionsManipulator_fakeScope_%s';
+    const FAKE_SCOPE_PATTERN = '_noFlash_FunctionsManipulator_fakeScope_%s_%s';
 
-    /**
-     * @var string How many times script should try to find unique scope key.
-     * @internal
-     */
-    const SCOPE_KEY_MAX_LOOPS = 100;
-
-    protected function getUniqueScopeKey()
+    protected function getScopeKey($ns, $functionName)
     {
-        for ($i = 0; $i < static::SCOPE_KEY_MAX_LOOPS; $i++) {
-            $key = sprintf(static::FAKE_SCOPE_PATTERN, sha1(uniqid()));
-
-            if (!isset($GLOBALS[$key])) {
-                return $key;
-            }
-        }
-
-        throw new ScopeGenerationLimitException(static::SCOPE_KEY_MAX_LOOPS);
+        return sprintf(self::FAKE_SCOPE_PATTERN, strtr($ns, ['\\' => '']), $functionName);
     }
 
     private function getInjectionCode($scopeId, InjectableInterface $injection)
@@ -60,28 +49,79 @@ CODE;
         return $injectionCode;
     }
 
+    private function getAccessor($ns, $functionName)
+    {
+        $ns = trim($ns, '\\');
+        return '\\' . ((empty($ns)) ? $functionName : ($ns . '\\' . $functionName));
+    }
+
+    /**
+     * Injects given injectable entity. If injection already exists method will fail.
+     *
+     * @param InjectableInterface $injection
+     *
+     * @return string Scope ID to use later with replaceFunctionInjection()
+     *
+     * @throws RedeclareException Injection/function already exists
+     */
     public function injectFunction(InjectableInterface $injection)
     {
         $functionName = $injection->getFunctionName();
         if ($functionName === null) {
-            throw new IncompleteInjectableException(
-                'Passed injectable lacks function name'
-            );
+            throw new IncompleteInjectableException('Passed injectable lacks function name');
         }
 
-        $ns = trim($injection->getNamespace(), '\\');
-        $accessor = '\\' . ((empty($ns)) ? $functionName : ($ns . '\\' . $functionName));
-        if (function_exists($accessor)) {
+        $ns = $injection->getNamespace();
+        $scopeId = $this->getScopeKey($ns, $functionName);
+
+        if (isset($GLOBALS[$scopeId])) { //There is already an injection - just stop here
+            throw new InjectionCollisionException($ns, $functionName);
+        }
+
+        $this->injectProxyCode($scopeId, $injection);
+
+        $GLOBALS[$scopeId] = $injection;
+
+        return $scopeId;
+    }
+
+    private function injectProxyCode($scopeId, InjectableInterface $injection)
+    {
+        $ns = $injection->getNamespace();
+        $functionName = $injection->getFunctionName();
+
+        if (function_exists($this->getAccessor($ns, $functionName))) {
             throw new RedeclareException($ns, $functionName);
         }
 
-        $scopeId = $this->getUniqueScopeKey();
-        $GLOBALS[$scopeId] = $injection;
-        $injectionCode = $this->getInjectionCode($scopeId, $injection);
-
-        //var_dump($injectionCode);
         //The only valid use-case for eval() in my career...
-        eval($injectionCode);
+        eval($this->getInjectionCode($scopeId, $injection));
+    }
+
+    /**
+     * Injects given injectable entity. If injection already exists it will be replaced
+     *
+     * @param InjectableInterface $injection
+     *
+     * @return string Scope ID to use later with replaceFunctionInjection()
+     *
+     * @throws RedeclareException Function, which is not injection, already exists
+     */
+    public function forceInjectFunction(InjectableInterface $injection)
+    {
+        $functionName = $injection->getFunctionName();
+        if ($functionName === null) {
+            throw new IncompleteInjectableException('Passed injectable lacks function name');
+        }
+
+        $ns = $injection->getNamespace();
+        $scopeId = $this->getScopeKey($ns, $functionName);
+
+        if (!isset($GLOBALS[$scopeId])) { //New injection - we need to inject code
+            $this->injectProxyCode($scopeId, $injection);
+        }
+
+        $GLOBALS[$scopeId] = $injection;
 
         return $scopeId;
     }

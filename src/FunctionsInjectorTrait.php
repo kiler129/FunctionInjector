@@ -19,7 +19,7 @@ trait FunctionsInjectorTrait
      */
     private $_injector;
 
-    protected function injectIntoClassScope($fqcn, $function, callable $cb)
+    protected function injectIntoClassScope($fqcn, $function, callable $cb, $replaceIfExists = false)
     {
         if (!class_exists($fqcn)) {
             throw new \RuntimeException(
@@ -34,10 +34,10 @@ trait FunctionsInjectorTrait
         $fqcn = trim($fqcn, '\\');
         $ns = substr($fqcn, 0, (int)strrpos($fqcn, '\\'));
 
-        $this->injectIntoNamespace($ns, $function, $cb);
+        $this->injectIntoNamespace($ns, $function, $cb, $replaceIfExists);
     }
 
-    protected function injectIntoNamespace($ns, $function, callable $cb)
+    protected function injectIntoNamespace($ns, $function, callable $cb, $replaceIfExists = false)
     {
         if ($this->_injector === null) {
             $this->_injector = new FunctionInjector();
@@ -48,6 +48,11 @@ trait FunctionsInjectorTrait
         $injection->setFunctionName($function);
         $injection->setCallback($cb);
 
-        $this->_injector->injectFunction($injection);
+        if ($replaceIfExists) {
+            $this->_injector->forceInjectFunction($injection);
+            
+        } else {
+            $this->_injector->injectFunction($injection);
+        }
     }
 }
