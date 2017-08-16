@@ -10,6 +10,7 @@
 
 namespace noFlash\FunctionsManipulator;
 
+use noFlash\FunctionsManipulator\Exception\RuntimeException;
 use noFlash\FunctionsManipulator\Injectable\InjectableCallback;
 use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
 
@@ -23,7 +24,7 @@ trait FunctionsInjectorTrait
     protected function injectIntoClassScope($fqcn, $function, callable $cb, $replaceIfExists = false)
     {
         if (!class_exists($fqcn)) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Cannot inject "%s()" into "%s" scope - class does not exists',
                     $function,

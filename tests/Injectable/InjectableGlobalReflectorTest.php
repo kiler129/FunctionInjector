@@ -12,6 +12,7 @@
 
 namespace noFlash\FunctionsManipulator\Tests\Injectable;
 
+use noFlash\FunctionsManipulator\Exception\RuntimeException;
 use noFlash\FunctionsManipulator\FunctionsInjectorTrait;
 use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
@@ -32,14 +33,13 @@ class InjectableGlobalReflectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Getting callback for reflector referencing non-callable global function
-     *          throws runtime exception
+     * @testdox Getting callback for reflector referencing non-callable global function throws RuntimeException
      */
     public function testGettingCallbackForReflectorReferencingNonCallableGlobalFunctionThrowsRuntimeException()
     {
         $this->subjectUnderTest->setFunctionName('__injectableGlobalReflectorTest__time');
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp(
             '/function __injectableGlobalReflectorTest__time.*?doesn\'t exists/'
         );

@@ -12,6 +12,8 @@
 
 namespace noFlash\FunctionsManipulator\Injectable;
 
+use noFlash\FunctionsManipulator\Exception\RuntimeException;
+
 /**
  * This injectable simply creates reflector which if called simply calls global function.
  */
@@ -33,7 +35,7 @@ class InjectableGlobalReflector extends AbstractInjectable
 
         $globalFn = '\\' . $fn;
         if (!is_callable($globalFn)) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Failed to generate reflector callback - ' .
                     'function %s() doesn\'t exists in the global scope',

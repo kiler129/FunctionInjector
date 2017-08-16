@@ -10,6 +10,7 @@
 
 namespace noFlash\FunctionsManipulator\Tests;
 
+use noFlash\FunctionsManipulator\Exception\RuntimeException;
 use noFlash\FunctionsManipulator\FunctionInjector;
 use noFlash\FunctionsManipulator\Injectable\InjectableCallback;
 use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
@@ -88,11 +89,11 @@ class FunctionsInjectorTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Injecting into non-existing class scope throws \RuntimeException
+     * @testdox Injecting into non-existing class scope throws RuntimeException
      */
     public function testInjectingIntoNonExistingClassScopeThrowsRuntimeException()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('class does not exists');
 
         $this->subjectUnderTest->callInjectIntoClassScope(
