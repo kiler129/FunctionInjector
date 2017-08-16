@@ -37,6 +37,14 @@ final class InjectionProxy
         return self::$injectables[$scopeId];
     }
 
+    /**
+     * @return InjectableInterface[] List of all injections with their scopes
+     */
+    public static function getInjections()
+    {
+        return self::$injectables;
+    }
+
     public static function callInjection($scopeId, array $args)
     {
         if (!self::hasInjection($scopeId)) {
