@@ -12,6 +12,7 @@
 
 namespace noFlash\FunctionsManipulator\Injectable;
 
+use noFlash\FunctionsManipulator\Exception\LogicException;
 use noFlash\FunctionsManipulator\Exception\RuntimeException;
 
 /**
@@ -28,7 +29,7 @@ class InjectableGlobalReflector extends AbstractInjectable
     {
         $fn = $this->getFunctionName();
         if ($fn === null) {
-            throw new \LogicException(
+            throw new LogicException(
                 'Reflector callback cannot be generate until function name is set'
             );
         }

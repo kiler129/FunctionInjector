@@ -12,6 +12,7 @@
 
 namespace noFlash\FunctionsManipulator\Tests\Injectable;
 
+use noFlash\FunctionsManipulator\Exception\LogicException;
 use noFlash\FunctionsManipulator\Exception\RuntimeException;
 use noFlash\FunctionsManipulator\FunctionsInjectorTrait;
 use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
@@ -30,6 +31,16 @@ class InjectableGlobalReflectorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->subjectUnderTest = new InjectableGlobalReflector();
+    }
+
+    /**
+     * @testdox Generating callback without function name throws LogicException
+     */
+    public function testGeneratingCallbackWithoutFunctionNameThrowsLogicException()
+    {
+        $this->expectException(LogicException::class);
+
+        $this->subjectUnderTest->getCallback();
     }
 
     /**
