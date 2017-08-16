@@ -11,8 +11,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\ScopeNotFoundException;
+use PHPUnit\Framework\TestCase;
 
-class ScopeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase
+class ScopeNotFoundExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {

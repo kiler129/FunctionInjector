@@ -11,8 +11,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\LogicException;
+use PHPUnit\Framework\TestCase;
 
-class LogicExceptionTest extends \PHPUnit_Framework_TestCase
+class LogicExceptionTest extends TestCase
 {
     /**
      * @testdox Class extends \LogicException

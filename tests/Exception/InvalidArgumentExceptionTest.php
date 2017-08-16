@@ -13,8 +13,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-class InvalidArgumentExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidArgumentExceptionTest extends TestCase
 {
     /**
      * @testdox Class extends \InvalidArgumentException

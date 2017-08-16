@@ -12,8 +12,9 @@ namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\InvalidFunctionNameException;
 use noFlash\FunctionsManipulator\NameValidator;
+use PHPUnit\Framework\TestCase;
 
-class InvalidFunctionNameExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidFunctionNameExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {

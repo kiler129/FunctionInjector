@@ -15,8 +15,9 @@ namespace noFlash\FunctionsManipulator\Tests\Injectable;
 use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
 use noFlash\FunctionsManipulator\Exception\InvalidFunctionNameException;
 use noFlash\FunctionsManipulator\Exception\InvalidNamespaceException;
+use PHPUnit\Framework\TestCase;
 
-class AbstractInjectableTest extends \PHPUnit_Framework_TestCase
+class AbstractInjectableTest extends TestCase
 {
     /**
      * @var AbstractInjectableFixture

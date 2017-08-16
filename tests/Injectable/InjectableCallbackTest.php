@@ -15,8 +15,9 @@ use noFlash\FunctionsManipulator\Exception\InvalidFunctionNameException;
 use noFlash\FunctionsManipulator\Exception\InvalidNamespaceException;
 use noFlash\FunctionsManipulator\Injectable\InjectableCallback;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
+use PHPUnit\Framework\TestCase;
 
-class InjectableCallbackTest extends \PHPUnit_Framework_TestCase
+class InjectableCallbackTest extends TestCase
 {
     /**
      * @var InjectableCallback

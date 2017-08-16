@@ -16,8 +16,9 @@ use noFlash\FunctionsManipulator\Injectable\InjectableCallback;
 use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
 use noFlash\FunctionsManipulator\InjectionProxy;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsInjectorTraitTest extends \PHPUnit_Framework_TestCase
+class FunctionsInjectorTraitTest extends TestCase
 {
     /**
      * @var FunctionsInjectorTraitFixture

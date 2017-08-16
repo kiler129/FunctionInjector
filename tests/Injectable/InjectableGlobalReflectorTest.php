@@ -17,8 +17,9 @@ use noFlash\FunctionsManipulator\Exception\RuntimeException;
 use noFlash\FunctionsManipulator\FunctionsInjectorTrait;
 use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
+use PHPUnit\Framework\TestCase;
 
-class InjectableGlobalReflectorTest extends \PHPUnit_Framework_TestCase
+class InjectableGlobalReflectorTest extends TestCase
 {
     //Using FunctionInjector to test FunctionInjector - clever, huh? :D
     use FunctionsInjectorTrait;

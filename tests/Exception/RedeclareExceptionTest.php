@@ -11,8 +11,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\RedeclareException;
+use PHPUnit\Framework\TestCase;
 
-class RedeclareExceptionTest extends \PHPUnit_Framework_TestCase
+class RedeclareExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {

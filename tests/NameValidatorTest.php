@@ -12,8 +12,9 @@ namespace noFlash\FunctionsManipulator\Tests;
 
 use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
 use noFlash\FunctionsManipulator\NameValidator;
+use PHPUnit\Framework\TestCase;
 
-class NameValidatorTest extends \PHPUnit_Framework_TestCase
+class NameValidatorTest extends TestCase
 {
     const RESERVED_KEYWORDS = [
         '__halt_compiler',

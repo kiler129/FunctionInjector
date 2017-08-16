@@ -13,8 +13,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\RuntimeException;
+use PHPUnit\Framework\TestCase;
 
-class RuntimeExceptionTest extends \PHPUnit_Framework_TestCase
+class RuntimeExceptionTest extends TestCase
 {
     /**
      * @testdox Class extends \RuntimeException

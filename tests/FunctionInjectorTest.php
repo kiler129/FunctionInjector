@@ -14,8 +14,9 @@ use noFlash\FunctionsManipulator\Exception\IncompleteInjectableException;
 use noFlash\FunctionsManipulator\Exception\RedeclareException;
 use noFlash\FunctionsManipulator\FunctionInjector;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
+use PHPUnit\Framework\TestCase;
 
-class FunctionInjectorTest extends \PHPUnit_Framework_TestCase
+class FunctionInjectorTest extends TestCase
 {
     /**
      * @var FunctionInjector

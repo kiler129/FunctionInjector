@@ -5,9 +5,10 @@ namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 
 use noFlash\FunctionsManipulator\Exception\InjectionCollisionException;
+use PHPUnit\Framework\TestCase;
 
 
-class InjectionCollisionExceptionTest extends \PHPUnit_Framework_TestCase
+class InjectionCollisionExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {

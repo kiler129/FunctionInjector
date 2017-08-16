@@ -15,11 +15,12 @@ namespace noFlash\FunctionsManipulator\Tests;
 use noFlash\FunctionsManipulator\Exception\ScopeNotFoundException;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
 use noFlash\FunctionsManipulator\InjectionProxy;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @runTestsInSeparateProcesses
  */
-class InjectionProxyTest extends \PHPUnit_Framework_TestCase
+class InjectionProxyTest extends TestCase
 {
     public function testNewInstanceCannotBeCreated()
     {

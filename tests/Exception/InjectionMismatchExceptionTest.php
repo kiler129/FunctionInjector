@@ -11,8 +11,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\InjectionMismatchException;
+use PHPUnit\Framework\TestCase;
 
-class InjectionMismatchExceptionTest extends \PHPUnit_Framework_TestCase
+class InjectionMismatchExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {

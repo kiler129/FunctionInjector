@@ -11,8 +11,9 @@
 namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\IncompleteInjectableException;
+use PHPUnit\Framework\TestCase;
 
-class IncompleteInjectableExceptionTest extends \PHPUnit_Framework_TestCase
+class IncompleteInjectableExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {

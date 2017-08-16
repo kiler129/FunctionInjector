@@ -12,8 +12,9 @@ namespace noFlash\FunctionsManipulator\Tests\Exception;
 
 use noFlash\FunctionsManipulator\Exception\InvalidNamespaceException;
 use noFlash\FunctionsManipulator\NameValidator;
+use PHPUnit\Framework\TestCase;
 
-class InvalidNamespaceExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidNamespaceExceptionTest extends TestCase
 {
     public function testClassIsAnException()
     {
