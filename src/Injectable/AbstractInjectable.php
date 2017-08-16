@@ -48,7 +48,7 @@ abstract class AbstractInjectable implements InjectableInterface
     {
         if (!is_string($ns)) {
             throw new \InvalidArgumentException(
-                "Namespace expected to be a string, got $ns"
+                "Namespace expected to be a string, got " . gettype($ns)
             );
         }
 
