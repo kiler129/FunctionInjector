@@ -35,17 +35,17 @@ class InjectableGlobalReflector extends AbstractInjectable
         }
 
         $globalFn = '\\' . $fn;
-        if (!is_callable($globalFn)) {
-            throw new RuntimeException(
-                sprintf(
-                    'Failed to generate reflector callback - ' .
-                    'function %s() doesn\'t exists in the global scope',
-                    $this->getFunctionName()
-                )
-            );
-        }
-
         return function (...$args) use ($globalFn) {
+            if (!is_callable($globalFn)) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Failed to generate reflector callback - ' .
+                        'function %s() doesn\'t exists in the global scope',
+                        $this->getFunctionName()
+                    )
+                );
+            }
+
             return $globalFn(...$args);
         };
     }

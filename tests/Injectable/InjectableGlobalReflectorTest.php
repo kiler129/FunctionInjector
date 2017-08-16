@@ -45,17 +45,31 @@ class InjectableGlobalReflectorTest extends TestCase
     }
 
     /**
-     * @testdox Getting callback for reflector referencing non-callable global function throws RuntimeException
+     * @testdox Getting callback for reflector referencing non-callable global function provides valid callback
      */
-    public function testGettingCallbackForReflectorReferencingNonCallableGlobalFunctionThrowsRuntimeException()
+    public function testGettingCallbackForReflectorReferencingNonCallableGlobalFunctionProvidesValidCallback()
     {
         $this->subjectUnderTest->setFunctionName('__injectableGlobalReflectorTest__time');
+
+        $cb = $this->subjectUnderTest->getCallback();
+
+        $this->assertTrue(is_callable($cb));
+    }
+
+    /**
+     * @testdox Calling callback for reflector referencing non-callable global function throws RuntimeException
+     */
+    public function testCallingCallbackForReflectorReferencingNonCallableGlobalFunctionThrowsRuntimeException()
+    {
+        $this->subjectUnderTest->setFunctionName('__injectableGlobalReflectorTest__time');
+        $cb = $this->subjectUnderTest->getCallback();
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageRegExp(
             '/function __injectableGlobalReflectorTest__time.*?doesn\'t exists/'
         );
-        $this->subjectUnderTest->getCallback();
+
+        $cb();
     }
 
     /**
