@@ -11,6 +11,7 @@
 namespace noFlash\FunctionsManipulator;
 
 use noFlash\FunctionsManipulator\Injectable\InjectableCallback;
+use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
 
 trait FunctionsInjectorTrait
 {
@@ -53,6 +54,18 @@ trait FunctionsInjectorTrait
             
         } else {
             $this->_injector->injectFunction($injection);
+        }
+    }
+
+    protected function resetAllInjections()
+    {
+        foreach (InjectionProxy::getInjections() as $scopeId => $injectable) {
+            InjectionProxy::setInjection(
+                $scopeId,
+                InjectableGlobalReflector::createReflectorFromInjectable(
+                    $injectable
+                )
+            );
         }
     }
 }

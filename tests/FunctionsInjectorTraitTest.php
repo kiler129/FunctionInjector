@@ -12,6 +12,7 @@ namespace noFlash\FunctionsManipulator\Tests;
 
 use noFlash\FunctionsManipulator\FunctionInjector;
 use noFlash\FunctionsManipulator\Injectable\InjectableCallback;
+use noFlash\FunctionsManipulator\Injectable\InjectableGlobalReflector;
 use noFlash\FunctionsManipulator\Injectable\InjectableInterface;
 use noFlash\FunctionsManipulator\InjectionProxy;
 
@@ -159,5 +160,80 @@ class FunctionsInjectorTraitTest extends \PHPUnit_Framework_TestCase
             $cb,
             true
         );
+    }
+
+    /**
+     * @uses \noFlash\FunctionsManipulator\InjectionProxy
+     * @runInSeparateProcess
+     */
+    public function testAllKnownProxyInjectionsCanBeReset()
+    {
+        $timeMock = $this->getMockForAbstractClass(InjectableInterface::class);
+        $timeMock
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('time')
+        ;
+        $timeMock
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn('noFlash\FunctionsManipulator\Tests\_Time')
+        ;
+
+        $dateMock = $this->getMockForAbstractClass(InjectableInterface::class);
+        $dateMock
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('date')
+        ;
+        $dateMock
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn('noFlash\FunctionsManipulator\Tests\_Date')
+        ;
+
+        $randMock = $this->getMockForAbstractClass(InjectableInterface::class);
+        $randMock
+            ->expects($this->atLeastOnce())
+            ->method('getFunctionName')
+            ->willReturn('rand')
+        ;
+        $randMock
+            ->expects($this->atLeastOnce())
+            ->method('getNamespace')
+            ->willReturn('noFlash\FunctionsManipulator\Tests\_Rand')
+        ;
+
+        InjectionProxy::setInjection('time-scope', $timeMock);
+        InjectionProxy::setInjection('date-scope', $dateMock);
+        InjectionProxy::setInjection('rand-scope', $randMock);
+
+
+        $this->subjectUnderTest->callResetAllInjections();
+
+
+        $timeReplacement = InjectionProxy::getInjection('time-scope');
+        $this->assertInstanceOf(InjectableGlobalReflector::class, $timeReplacement);
+        $this->assertSame(
+            'noFlash\FunctionsManipulator\Tests\_Time',
+            $timeReplacement->getNamespace()
+        );
+        $this->assertSame('time', $timeReplacement->getFunctionName());
+
+        $dateReplacement = InjectionProxy::getInjection('date-scope');
+        $this->assertInstanceOf(InjectableGlobalReflector::class, $dateReplacement);
+        $this->assertSame(
+            'noFlash\FunctionsManipulator\Tests\_Date',
+            $dateReplacement->getNamespace()
+        );
+        $this->assertSame('date', $dateReplacement->getFunctionName());
+
+        $randReplacement = InjectionProxy::getInjection('rand-scope');
+        $this->assertInstanceOf(InjectableGlobalReflector::class, $randReplacement);
+        $this->assertSame(
+            'noFlash\FunctionsManipulator\Tests\_Rand',
+            $randReplacement->getNamespace()
+        );
+        $this->assertSame('rand', $randReplacement->getFunctionName());
     }
 }

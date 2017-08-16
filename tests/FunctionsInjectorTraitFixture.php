@@ -27,6 +27,11 @@ class FunctionsInjectorTraitFixture
         $this->injectIntoNamespace(...$args);
     }
 
+    public function callResetAllInjections()
+    {
+        $this->resetAllInjections();
+    }
+
     public function setCustomInjector(FunctionInjector $injector)
     {
         //Not a very elegant solution to mess like that with trait, but I don't have
