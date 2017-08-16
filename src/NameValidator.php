@@ -10,6 +10,8 @@
 
 namespace noFlash\FunctionsManipulator;
 
+use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
+
 class NameValidator
 {
     const RESULT_REGEX_FAILED     = -2;
@@ -98,7 +100,7 @@ class NameValidator
     public static function getErrorFromCode($code)
     {
         if (!is_integer($code)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Code should be integer, got ', gettype($code))
             );
         }

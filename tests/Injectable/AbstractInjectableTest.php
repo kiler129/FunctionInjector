@@ -12,6 +12,7 @@
 
 namespace noFlash\FunctionsManipulator\Tests\Injectable;
 
+use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
 use noFlash\FunctionsManipulator\Exception\InvalidFunctionNameException;
 use noFlash\FunctionsManipulator\Exception\InvalidNamespaceException;
 
@@ -46,11 +47,11 @@ class AbstractInjectableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox Passing non-string namespace throws \InvalidArgumentException
+     * @testdox Passing non-string namespace throws InvalidArgumentException
      */
     public function testPassingNonStringNamespaceThrowsInvalidArgumentException()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageRegExp('/expected.*?string.*?got double/');
 
         $this->subjectUnderTest->setNamespace((double)123);

@@ -10,6 +10,7 @@
 
 namespace noFlash\FunctionsManipulator\Tests;
 
+use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
 use noFlash\FunctionsManipulator\NameValidator;
 
 class NameValidatorTest extends \PHPUnit_Framework_TestCase
@@ -238,7 +239,8 @@ class NameValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testTryingToGetErrorCodeDescriptionWhilePassingNonIntegerValueThrowsException()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
+
         NameValidator::getErrorFromCode(M_PI);
     }
 }

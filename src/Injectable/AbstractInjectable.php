@@ -10,6 +10,7 @@
 
 namespace noFlash\FunctionsManipulator\Injectable;
 
+use noFlash\FunctionsManipulator\Exception\InvalidArgumentException;
 use noFlash\FunctionsManipulator\Exception\InvalidFunctionNameException;
 use noFlash\FunctionsManipulator\Exception\InvalidNamespaceException;
 use noFlash\FunctionsManipulator\NameValidator;
@@ -47,7 +48,7 @@ abstract class AbstractInjectable implements InjectableInterface
     public function setNamespace($ns)
     {
         if (!is_string($ns)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 "Namespace expected to be a string, got " . gettype($ns)
             );
         }
