@@ -54,7 +54,8 @@ class InjectableCallbackTest extends \PHPUnit_Framework_TestCase
         $cb = $this->subjectUnderTest->getCallback();
         $this->assertTrue(is_callable($cb), 'Returned entity is not callable');
 
-        $this->setExpectedException(IncompleteInjectableException::class);
+        $this->expectException(IncompleteInjectableException::class);
+
         call_user_func($cb);
     }
 
@@ -85,7 +86,8 @@ class InjectableCallbackTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfNamespaceNameIsNotAString()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->subjectUnderTest->setNamespace(M_PI);
     }
 
@@ -104,13 +106,17 @@ class InjectableCallbackTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownForNamespacesContainingReservedKeywords($ns)
     {
-        $this->setExpectedException(InvalidNamespaceException::class, 'reserved');
+        $this->expectException(InvalidNamespaceException::class);
+        $this->expectExceptionMessage('reserved');
+
         $this->subjectUnderTest->setNamespace($ns);
     }
 
     public function testExceptionIsThrownForNamespacesNotConformingWithPhpRules()
     {
-        $this->setExpectedException(InvalidNamespaceException::class, 'regex');
+        $this->expectException(InvalidNamespaceException::class);
+        $this->expectExceptionMessage('regex');
+
         $this->subjectUnderTest->setNamespace('\\foo\\bar \\baz');
     }
 
@@ -140,7 +146,8 @@ class InjectableCallbackTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionIsThrownIfFunctionNameIsNotAString()
     {
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->subjectUnderTest->setFunctionName(123);
     }
 
@@ -159,13 +166,17 @@ class InjectableCallbackTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownForFunctionNameBeingAReservedKeyword($name)
     {
-        $this->setExpectedException(InvalidFunctionNameException::class, 'reserved');
+        $this->expectException(InvalidFunctionNameException::class);
+        $this->expectExceptionMessage('reserved');
+
         $this->subjectUnderTest->setFunctionName($name);
     }
 
     public function testExceptionIsThrownForFunctionNameNotConformingWithPhpRules()
     {
-        $this->setExpectedException(InvalidFunctionNameException::class, 'regex');
+        $this->expectException(InvalidFunctionNameException::class);
+        $this->expectExceptionMessage('regex');
+
         $this->subjectUnderTest->setFunctionName('this is test');
     }
 

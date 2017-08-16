@@ -35,10 +35,9 @@ class FunctionInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('getFunctionName')
             ->willReturn(null);
 
-        $this->setExpectedException(
-            IncompleteInjectableException::class,
-            'function name'
-        );
+        $this->expectException(IncompleteInjectableException::class);
+        $this->expectExceptionMessage('function name');
+
         $this->subjectUnderTest->injectFunction($injection);
     }
 
@@ -367,7 +366,8 @@ class FunctionInjectorTest extends \PHPUnit_Framework_TestCase
             ->method('getCallback')
             ->willReturn($closure);
 
-        $this->setExpectedException(RedeclareException::class);
+        $this->expectException(RedeclareException::class);
+
         $this->subjectUnderTest->injectFunction($injection);
     }
 }
